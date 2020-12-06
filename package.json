@@ -1,0 +1,30 @@
+{
+  "name": "cx-react-pokemon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "knex": "^0.21.12",
+    "pg": "^8.5.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "dev": "nodemon server/src/server",
+    "start": "node server/src/server",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "node server/src/seed"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TitouanDS/cx-react-pokemon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TitouanDS/cx-react-pokemon/issues"
+  },
+  "homepage": "https://github.com/TitouanDS/cx-react-pokemon#readme"
+}
