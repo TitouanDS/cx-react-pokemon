@@ -29,12 +29,44 @@ class App extends React.Component{
       poids: null,
       couleur: null,
     }
-
-
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  async componentDidMount() {
-    const response = await fetch(`http://localhost:4242/pokemons/065`)
+  handleChange(event) { this.setState({value: event.target.value});  }
+  handleSubmit(event) { alert('A name was submitted: ' + this.state.value);
+                        event.preventDefault();
+
+            fetch(`http://localhost:4242/pokemons/${this.state.value}`)
+            .then((res) => {
+              return res.json()
+            })
+            .then((data) => {
+                this.setState({
+                  resp: JSON.stringify(data),
+                  all: data,
+                  numéro: data.numéro,
+                  nomen: data.nomen,
+                  nom: data.nom,
+                  nomja: data.nomja,
+                  espece: data.espece,
+                  taille: data.taille,
+                  type1: data.type1,
+                  type2: data.type2,
+                  forme: data.forme,
+                  poids: data.poids,
+                  nomde: data.nomde,
+                  nomtm: data.nomtm,
+                  type1: data.type1,
+                  type2: data.type2,
+                  forme: data.forme,
+                  couleur: data.couleur,
+                })
+            })
+  }
+
+   async componentDidMount() {
+    const response = await fetch(`http://localhost:4242/pokemons`)
     const data = await response.json()
     console.log(data)
     this.setState({
@@ -58,6 +90,7 @@ class App extends React.Component{
     })
     console.log(this.state.all[0])
   }
+
 
   render(){
    
@@ -105,12 +138,6 @@ class App extends React.Component{
               {all}
 
 
-                {/* <h2>Array of Objects:</h2>
-                <div>
-                  {this.state.all.map((item, i) => {
-                    return <li key={item.numéro}> {item.nom} {item.numéro} </li>
-                  })}
-                </div> */}
             <Row>
               <Col>
                 <Table striped borderless hover class="bg-light">
