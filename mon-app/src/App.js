@@ -6,7 +6,9 @@ import { Row } from 'react-bootstrap';
 import { Col } from 'react-bootstrap';
 import { Form } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
-
+import { Card } from 'react-bootstrap';
+import { CardColumns } from 'react-bootstrap';
+import { Figure } from 'react-bootstrap';
 
 class App extends React.Component{
 
@@ -91,53 +93,82 @@ class App extends React.Component{
     console.log(this.state.all[0])
   }
 
-
   render(){
    
     const isAll = this.state.all;
     let all;
     if (!isAll.length == 0) {
-      all =  <div>
-                {this.state.all.map((item, i) => {
-                  return <li key={item.numéro}> {item.nom} {item.numéro} </li>
+      all = <div>
+              <CardColumns>
+                {this.state.all.sort((a, b) => a.numéro - b.numéro).map((item, i) => {
+                  return  <Card>
+                            <Card.Img variant="top" src={`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${item.numéro || 'no data' }.png`} />
+                            <Card.Body>
+                              <Card.Title># {item.numéro} - {item.nom}</Card.Title>
+                              <Card.Text>
+                              <Figure.Caption>Taille : {item.taille} - Poids : {item.poids}</Figure.Caption>
+                              <Figure.Caption>Type1 : {item.type1}</Figure.Caption>
+                              <Figure.Caption>Type2 : {item.type2}</Figure.Caption>
+                              <Figure.Caption>Espèce : {item.espece}</Figure.Caption>
+                              <Figure.Caption>Forme : {item.forme}</Figure.Caption>
+                              <Figure.Caption>Nom EN : {item.nomen}</Figure.Caption>
+                              <Figure.Caption>Nom DE : {item.nomde}</Figure.Caption>
+                              <Figure.Caption>Nom TM : {item.nomtm}</Figure.Caption>
+                              <Figure.Caption>Nom JA : {item.nomja}</Figure.Caption>
+                              </Card.Text>
+                            </Card.Body>
+                          </Card>
                 })}
-              </div>
+                  </CardColumns>
+
+            </div>
     } else {
       all = "";
     }
 
+    const isNom = this.state.nom;
+    let nom;
+    if (isNom) {
+      nom = <div>
+              <Row className="justify-content-md-center">
+                <img src={`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${this.state.numéro || 'no data' }.png`} class="img-fluid"></img>
+              </Row>
+              <Row className="justify-content-md-center">
+                <h1 class="text-dark"> #{this.state.numéro || 'no data' } {this.state.nom || 'no data' }</h1>
+              </Row>
+            </div>
+    } else {
+      nom = "";
+    }
 
     return (
-   
       <div className="App">
         <header className="App-header">
         <Container>
           <Jumbotron>
           <Form onSubmit={this.handleSubmit}>
             <Form.Group controlId="formBasicEmail">
-              <Form.Label>Username :</Form.Label>
-              <Form.Control type="text" value={this.state.value} placeholder="Enter username" onChange={this.handleChange}/>
+              <Form.Label>Pokemon number :</Form.Label>
+              <Form.Control type="text" value={this.state.value} placeholder="Enter number" onChange={this.handleChange}/>
             </Form.Group>
-            <Row  className="justify-content-md-center">
-              <Button variant="primary" type="submit" >
-                Submit
-              </Button>
-            </Row>
+              <Row className="justify-content-md-center">
+                <p>Search for a pokemon of the first generation with its appearance number. Submit nothing to display all the pokemons.</p>
+              </Row>
+              <Row className="justify-content-md-center">
+                <Button variant="primary" type="submit" >Search</Button>
+              </Row>
+              <hr class="my-4"></hr>
+
           </Form>
-            <h1 class="text-dark"> #{this.state.numéro || 'no data' } {this.state.nom || 'no data' }</h1>
-            <hr class="my-4"></hr>
-
-            <img src={`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${this.state.numéro || 'no data' }.png`} class="img-thumbnail"></img>
-            <hr class="my-4"></hr>
-            
-            <h1 class="text-dark">Identité</h1>
-            <hr class="my-4"></hr>
-
-
+            {/* <h1 class="text-dark"> #{this.state.numéro || 'no data' } {this.state.nom || 'no data' }</h1> */}
+            <div isLoggedIn={isNom} />
+              {nom}
+         
             <div isLoggedIn={isAll} />
               {all}
 
-
+            <h1 class="text-dark">Identité</h1>
+            <hr class="my-4"></hr>
             <Row>
               <Col>
                 <Table striped borderless hover class="bg-light">
