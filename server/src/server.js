@@ -27,22 +27,20 @@ app.get('/pokemons', (req, res) => {
     knex.select().from("pokemon").then(rows => {
         res.json(rows)
         // res.json([rows, port])
-
     })
 }) 
 
 app.get('/pokemons/:id', (req, res) => {
     const {id} = req.params
-    knex.from("pokemon").where("id", id).then(row => {
+    knex.from("pokemon").where("numéro", id).then(row => {
         console.log(typeof row)
         res.json(row[0])
     })
-    
 })
 
 app.get('/pokemons/:id/nom', function(request, response) {
     const {id} = request.params
-    knex.from("pokemon").where("id", id).then(row => {
+    knex.from("pokemon").where("numéro", id).then(row => {
         console.log(typeof row)
         var o = row;
         var val = o[0];

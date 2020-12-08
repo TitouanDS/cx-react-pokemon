@@ -4,13 +4,17 @@ import { Table } from 'react-bootstrap';
 import { Container } from 'react-bootstrap';
 import { Row } from 'react-bootstrap';
 import { Col } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+
 
 class App extends React.Component{
 
   constructor(props) {
     super(props)
     this.state = {
-      pokemon: null,
+      all: [],
+      nom: null,
       index: null,
       nomen: null,
       nomja: null,
@@ -25,13 +29,16 @@ class App extends React.Component{
       poids: null,
       couleur: null,
     }
+
+
   }
 
   async componentDidMount() {
-    const response = await fetch('http://localhost:4242/pokemons/001')
+    const response = await fetch(`http://localhost:4242/pokemons/065`)
     const data = await response.json()
+    console.log(data)
     this.setState({
-      pokemon: data.nom,
+      all: data,
       numéro: data.numéro,
       nomen: data.nomen,
       nom: data.nom,
@@ -48,23 +55,43 @@ class App extends React.Component{
       type2: data.type2,
       forme: data.forme,
       couleur: data.couleur,
-
-
-
     })
-    //console.log(data)
+    console.log(this.state.all[0])
   }
 
   render(){
+   
+    const isAll = this.state.all;
+    let all;
+    if (!isAll.length == 0) {
+      all =  <div>
+                {this.state.all.map((item, i) => {
+                  return <li key={item.numéro}> {item.nom} {item.numéro} </li>
+                })}
+              </div>
+    } else {
+      all = "";
+    }
+
+
     return (
+   
       <div className="App">
         <header className="App-header">
-        <p>
-          Welcome into POKEDEX
-        </p>
         <Container>
           <Jumbotron>
-            <h1 class="text-dark"> #{this.state.numéro || 'no data' } {this.state.pokemon || 'no data' }</h1>
+          <Form onSubmit={this.handleSubmit}>
+            <Form.Group controlId="formBasicEmail">
+              <Form.Label>Username :</Form.Label>
+              <Form.Control type="text" value={this.state.value} placeholder="Enter username" onChange={this.handleChange}/>
+            </Form.Group>
+            <Row  className="justify-content-md-center">
+              <Button variant="primary" type="submit" >
+                Submit
+              </Button>
+            </Row>
+          </Form>
+            <h1 class="text-dark"> #{this.state.numéro || 'no data' } {this.state.nom || 'no data' }</h1>
             <hr class="my-4"></hr>
 
             <img src={`https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${this.state.numéro || 'no data' }.png`} class="img-thumbnail"></img>
@@ -73,71 +100,81 @@ class App extends React.Component{
             <h1 class="text-dark">Identité</h1>
             <hr class="my-4"></hr>
 
-            <Row>
 
-            <Col>
-              <Table striped borderless hover class="bg-light">
-                <tbody>
-                  <tr>
-                    <td>Couleur</td>
-                    <td>{this.state.couleur || 'no data' }</td>
-                  </tr>
-                  <tr>
-                    <td>Espece</td>
-                    <td>{this.state.espece || 'no data' }</td>
-                  </tr>
-                  <tr>
-                    <td>Type 1</td>
-                    <td>{this.state.type1 || 'no data' }</td>
-                  </tr>
-                  <tr>
-                    <td>Type 2</td>
-                    <td>{this.state.type2 || 'no data' }</td>
-                  </tr>
-                  <tr>
-                    <td>Taille</td>
-                    <td>{this.state.taille || 'no data' }</td>
-                  </tr>
-                  <tr>
-                    <td>Poids</td>
-                    <td>{this.state.poids || 'no data' }</td>
-                  </tr>
-                  <tr>
-                    <td>Forme</td>
-                    <td>{this.state.forme || 'no data' }</td>
-                  </tr>
-                </tbody>
-              </Table>
+            <div isLoggedIn={isAll} />
+              {all}
+
+
+                {/* <h2>Array of Objects:</h2>
+                <div>
+                  {this.state.all.map((item, i) => {
+                    return <li key={item.numéro}> {item.nom} {item.numéro} </li>
+                  })}
+                </div> */}
+            <Row>
+              <Col>
+                <Table striped borderless hover class="bg-light">
+                  <tbody>
+                    <tr>
+                      <td>Couleur</td>
+                      <td>{this.state.couleur || 'no data' }</td>
+                    </tr>
+                    <tr>
+                      <td>Espece</td>
+                      <td>{this.state.espece || 'no data' }</td>
+                    </tr>
+                    <tr>
+                      <td>Type 1</td>
+                      <td>{this.state.type1 || 'no data' }</td>
+                    </tr>
+                    <tr>
+                      <td>Type 2</td>
+                      <td>{this.state.type2 || 'no data' }</td>
+                    </tr>
+                    <tr>
+                      <td>Taille</td>
+                      <td>{this.state.taille || 'no data' }</td>
+                    </tr>
+                    <tr>
+                      <td>Poids</td>
+                      <td>{this.state.poids || 'no data' }</td>
+                    </tr>
+                    <tr>
+                      <td>Forme</td>
+                      <td>{this.state.forme || 'no data' }</td>
+                    </tr>
+                  </tbody>
+                </Table>
               </Col>
               <Col>
-              <Table striped borderless hover class="bg-light">
-                <tbody>
-                  <tr>
-                    <td>Pokémon</td>
-                    <td>{this.state.nom || 'no data' }</td>
-                  </tr>
-                  <tr>
-                    <td>Nom FR</td>
-                    <td>{this.state.nom || 'no data' }</td>
-                  </tr>
-                  <tr>
-                    <td>Nom EN</td>
-                    <td>{this.state.nomen || 'no data' }</td>
-                  </tr>
-                  <tr>
-                    <td>Nom DE</td>
-                    <td>{this.state.nomde || 'no data' }</td>
-                  </tr>
-                  <tr>
-                    <td>Nom TM</td>
-                    <td>{this.state.nomtm || 'no data' }</td>
-                  </tr>
-                  <tr>
-                    <td>Nom JA</td>
-                    <td>{this.state.nomja || 'no data' }</td>
-                  </tr>
-                </tbody>
-              </Table>
+                <Table striped borderless hover class="bg-light">
+                  <tbody>
+                    <tr>
+                      <td>Pokémon</td>
+                      <td>{this.state.nom || 'no data' }</td>
+                    </tr>
+                    <tr>
+                      <td>Nom FR</td>
+                      <td>{this.state.nom || 'no data' }</td>
+                    </tr>
+                    <tr>
+                      <td>Nom EN</td>
+                      <td>{this.state.nomen || 'no data' }</td>
+                    </tr>
+                    <tr>
+                      <td>Nom DE</td>
+                      <td>{this.state.nomde || 'no data' }</td>
+                    </tr>
+                    <tr>
+                      <td>Nom TM</td>
+                      <td>{this.state.nomtm || 'no data' }</td>
+                    </tr>
+                    <tr>
+                      <td>Nom JA</td>
+                      <td>{this.state.nomja || 'no data' }</td>
+                    </tr>
+                  </tbody>
+                </Table>
               </Col>
             </Row>
           </Jumbotron>
